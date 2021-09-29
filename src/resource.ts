@@ -10,6 +10,6 @@ for (const res in Resources) {
   loader.addResource((Resources as any)[res]);
 }
 
-loader.suppressPlayButton = false;
+loader.suppressPlayButton = true;
 
 export { Resources, loader };
