@@ -1,7 +1,12 @@
-import { Scene, Engine, Actor, Vector, Color, UIActor } from "excalibur";
-import { PointerDownEvent, PointerUpEvent } from "excalibur/dist/Input";
+import { Scene, Engine, Vector } from "excalibur";
+import {
+  PointerDownEvent,
+  PointerMoveEvent,
+  PointerUpEvent,
+} from "excalibur/dist/Input";
 import { Platform } from "./platform";
 import { Player } from "./player";
+import { UIArrow } from "./ui_arrow";
 
 export class Level extends Scene {
   constructor(engine: Engine) {
@@ -33,14 +38,23 @@ export class Level extends Scene {
     );
 
     let dragStartPos: Vector;
+    let arrow: UIArrow;
     engine.input.pointers.primary.on("down", (event: PointerDownEvent) => {
       dragStartPos = event.pos.clone();
       console.log(event.pos);
+
+      arrow = new UIArrow(event.pos.x, event.pos.y);
+      engine.add(arrow);
+    });
+    engine.input.pointers.primary.on("move", (event: PointerMoveEvent) => {
+      arrow?.setStartPoint(event.pos.x, event.pos.y);
+      console.log(event);
     });
     engine.input.pointers.primary.on("up", (event: PointerUpEvent) => {
       const vel = event.pos.sub(dragStartPos).negate();
       player.vel = vel;
-      console.log(event.pos);
+      arrow.kill();
+      arrow = undefined;
     });
     // engine.input.pointers.primary.on("move", (event: PointerMoveEvent) => {
     //   console.log(event.pos);
