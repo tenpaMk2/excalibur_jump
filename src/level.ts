@@ -32,10 +32,10 @@ export class Level extends Scene {
     );
     engine.add(initialPlatform);
 
-    const platforms = [];
-    platforms.push(
-      new Platform(380, 590, engine.drawWidth * 0.8, platformHeight)
-    );
+    const platforms: Platform[] = [];
+    // platforms.push(
+    //   new Platform(380, 590, engine.drawWidth * 0.8, platformHeight)
+    // );
 
     let dragStartPos: Vector;
     let arrow: UIArrow;
@@ -48,11 +48,13 @@ export class Level extends Scene {
     });
     engine.input.pointers.primary.on("move", (event: PointerMoveEvent) => {
       arrow?.setStartPoint(event.pos.x, event.pos.y);
-      console.log(event);
+      // console.log(event);
     });
     engine.input.pointers.primary.on("up", (event: PointerUpEvent) => {
-      const vel = event.pos.sub(dragStartPos).negate();
+      const vel = dragStartPos.sub(event.pos);
+      vel.y = -Math.sqrt(Math.abs(vel.y * 980 * 1.5));
       player.vel = vel;
+
       arrow.kill();
       arrow = undefined;
     });
