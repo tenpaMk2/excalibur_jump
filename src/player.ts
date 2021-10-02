@@ -8,7 +8,12 @@ import {
   Vector,
 } from "excalibur";
 
-export class Player extends Actor {
+export type ColliderChangable = {
+  bePassive: () => void;
+  beActive: () => void;
+};
+
+export class Player extends Actor implements ColliderChangable {
   constructor(x: number = 0, y: number = 0, width: number, height: number) {
     super({
       x: x,
@@ -23,4 +28,12 @@ export class Player extends Actor {
       }),
     });
   }
+
+  bePassive = () => {
+    this.body.collider.type = CollisionType.Passive;
+  };
+
+  beActive = () => {
+    this.body.collider.type = CollisionType.Active;
+  };
 }

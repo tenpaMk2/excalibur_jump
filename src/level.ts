@@ -33,9 +33,13 @@ export class Level extends Scene {
     engine.add(initialPlatform);
 
     const platforms: Platform[] = [];
-    // platforms.push(
-    //   new Platform(380, 590, engine.drawWidth * 0.8, platformHeight)
-    // );
+    platforms.push(
+      new Platform(380, 590, engine.drawWidth * 0.8, platformHeight)
+    );
+    platforms.forEach((platform) => {
+      engine.add(platform);
+      platform.addColliderChangable(player);
+    });
 
     let dragStartPos: Vector;
     let arrow: UIArrow;
@@ -64,7 +68,5 @@ export class Level extends Scene {
     // engine.input.pointers.on("move", (event: PointerMoveEvent) => {
     //   console.log(`${event.pos}`);
     // });
-
-    platforms.forEach((platform) => engine.add(platform));
   };
 }
